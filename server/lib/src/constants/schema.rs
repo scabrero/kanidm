@@ -674,9 +674,6 @@ pub static ref SCHEMA_CLASS_SERVICE_ACCOUNT: SchemaClass = SchemaClass {
     sync_allowed: true,
     systemmay: vec![
         Attribute::Mail.into(),
-        Attribute::PrimaryCredential.into(),
-        Attribute::JwsEs256PrivateKey.into(),
-        Attribute::ApiTokenSession.into(),
     ],
     systemexcludes: vec![EntryClass::Person.into()],
     ..Default::default()
@@ -803,6 +800,21 @@ pub static ref SCHEMA_CLASS_OAUTH2_RS_PUBLIC: SchemaClass = SchemaClass {
 
     description: "The class representing a configured Oauth2 Resource Server with public clients and pkce verification".to_string(),
     systemexcludes: vec![EntryClass::OAuth2ResourceServerBasic.into()],
+    ..Default::default()
+};
+
+pub static ref SCHEMA_CLASS_TOKEN_CAPABLE: SchemaClass = SchemaClass {
+    uuid: UUID_SCHEMA_CLASS_TOKEN_CAPABLE,
+    name: EntryClass::TokenCapable.into(),
+    description: "Object representation of a token-capable account".to_string(),
+
+    sync_allowed: true,
+    systemsupplements: vec![EntryClass::ServiceAccount.into()],
+    systemmay: vec![
+        Attribute::PrimaryCredential.into(),
+        Attribute::JwsEs256PrivateKey.into(),
+        Attribute::ApiTokenSession.into(),
+    ],
     ..Default::default()
 };
 

@@ -85,7 +85,7 @@ impl JwsKeygen {
             }
         }
 
-        if (e.attribute_equality(Attribute::Class, &EntryClass::ServiceAccount.into()) ||
+        if (e.attribute_equality(Attribute::Class, &EntryClass::TokenCapable.into()) ||
             e.attribute_equality(Attribute::Class, &EntryClass::SyncAccount.into())) &&
             !e.attribute_pres(Attribute::JwsEs256PrivateKey) {
                 security_info!("regenerating jws es256 private key");

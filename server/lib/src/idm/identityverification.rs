@@ -644,6 +644,7 @@ mod test {
         entry_init!(
             (Attribute::Class, EntryClass::Object.to_value()),
             (Attribute::Class, EntryClass::Account.to_value()),
+            (Attribute::Class, EntryClass::TokenCapable.to_value()),
             (Attribute::Class, EntryClass::ServiceAccount.to_value()),
             (Attribute::Name, Value::new_iname("invalid_user")),
             (Attribute::Uuid, Value::Uuid(uuid)),
