@@ -42,6 +42,13 @@ macro_rules! try_from_entry {
             OperationError::InvalidAccountState(format!("Missing attribute: {}", Attribute::Spn)),
         )?;
 
+        if !$value.attribute_equality(Attribute::Class, &EntryClass::TokenCapable.into()) {
+            return Err(OperationError::InvalidAccountState(format!(
+                "Missing class: {}",
+                EntryClass::TokenCapable
+            )));
+        }
+
         let jws_key = $value
             .get_ava_single_jws_key_es256(Attribute::JwsEs256PrivateKey)
             .cloned()
@@ -450,6 +457,7 @@ mod tests {
         let e1 = entry_init!(
             (Attribute::Class, EntryClass::Object.to_value()),
             (Attribute::Class, EntryClass::Account.to_value()),
+            (Attribute::Class, EntryClass::TokenCapable.to_value()),
             (Attribute::Class, EntryClass::ServiceAccount.to_value()),
             (Attribute::Name, Value::new_iname("test_account_only")),
             (Attribute::Uuid, Value::Uuid(testaccount_uuid)),

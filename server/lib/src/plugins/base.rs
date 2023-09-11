@@ -251,6 +251,7 @@ mod tests {
     lazy_static! {
         pub static ref TEST_ACCOUNT: EntryInitNew = entry_init!(
             (Attribute::Class, EntryClass::Account.to_value()),
+            (Attribute::Class, EntryClass::TokenCapable.to_value()),
             (Attribute::Class, EntryClass::ServiceAccount.to_value()),
             (Attribute::Class, EntryClass::MemberOf.to_value()),
             (Attribute::Name, Value::new_iname("test_account_1")),

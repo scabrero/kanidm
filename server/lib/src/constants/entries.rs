@@ -577,6 +577,7 @@ pub enum EntryClass {
     ServiceAccount,
     SyncAccount,
     SyncObject,
+    TokenCapable,
     Tombstone,
     User,
     System,
@@ -621,6 +622,7 @@ impl From<EntryClass> for &'static str {
             EntryClass::System => "system",
             EntryClass::SystemConfig => "system_config",
             EntryClass::SystemInfo => "system_info",
+            EntryClass::TokenCapable => "token_capable",
             EntryClass::Tombstone => "tombstone",
             #[cfg(any(test, debug_assertions))]
             EntryClass::TestClass => "testclass",

@@ -658,6 +658,7 @@ pub async fn service_account_post(
 ) -> Result<Json<()>, WebError> {
     let classes: Vec<String> = vec![
         EntryClass::ServiceAccount.into(),
+        EntryClass::TokenCapable.into(),
         EntryClass::Account.into(),
         EntryClass::Object.into(),
     ];

@@ -1866,6 +1866,7 @@ mod tests {
         let e1 = entry_init!(
             (Attribute::Class, EntryClass::Object.to_value()),
             (Attribute::Class, EntryClass::Account.to_value()),
+            (Attribute::Class, EntryClass::TokenCapable.to_value()),
             (Attribute::Class, EntryClass::ServiceAccount.to_value()),
             (Attribute::Name, Value::new_iname("user_account_only")),
             (Attribute::Uuid, Value::Uuid(testaccount_uuid)),

@@ -784,6 +784,7 @@ lazy_static! {
         create_classes: vec![
             EntryClass::Object,
             EntryClass::Account,
+            EntryClass::TokenCapable,
             EntryClass::ServiceAccount,
         ],
         ..Default::default()
@@ -1328,6 +1329,7 @@ lazy_static! {
         create_classes: vec![
             EntryClass::Object,
             EntryClass::Account,
+            EntryClass::TokenCapable,
             EntryClass::ServiceAccount,
         ],
         ..Default::default()
