@@ -442,6 +442,33 @@ mod tests {
     const TEST_CURRENT_TIME: u64 = 6000;
 
     #[idm_test]
+    async fn test_idm_token_capable(idms: &IdmServer, _idms_delayed: &mut IdmServerDelayed) {
+        let ct = Duration::from_secs(TEST_CURRENT_TIME);
+        let mut idms_prox_write = idms.proxy_write(ct).await;
+        let exp = Duration::from_secs(TEST_CURRENT_TIME + 6000);
+
+        let testaccount_uuid = Uuid::new_v4();
+
+        let e1 = entry_init!(
+            (Attribute::Class, EntryClass::Object.to_value()),
+            (Attribute::Class, EntryClass::Account.to_value()),
+            (Attribute::Class, EntryClass::ServiceAccount.to_value()),
+            (Attribute::Name, Value::new_iname("test_account_only")),
+            (Attribute::Uuid, Value::Uuid(testaccount_uuid)),
+            (Attribute::Description, Value::new_utf8s("testaccount")),
+            (Attribute::DisplayName, Value::new_utf8s("testaccount"))
+        );
+        let ce = CreateEvent::new_internal(vec![e1]);
+        let cr = idms_prox_write.qs_write.create(&ce);
+        assert!(cr.is_ok());
+
+        let gte = GenerateApiTokenEvent::new_internal(testaccount_uuid, "TestToken", Some(exp));
+
+        let api_token = idms_prox_write.service_account_generate_api_token(&gte, ct);
+        assert!(api_token.is_err());
+    }
+
+    #[idm_test]
     async fn test_idm_service_account_api_token(
         idms: &IdmServer,
         _idms_delayed: &mut IdmServerDelayed,
