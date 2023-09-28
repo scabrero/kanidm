@@ -705,10 +705,10 @@ lazy_static! {
         (Attribute::Class, EntryClass::System.to_value()),
         (Attribute::Uuid, Value::Uuid(UUID_SYSTEM_INFO)),
         (
-Attribute::Description,
+            Attribute::Description,
             Value::new_utf8s("System (local) info and metadata object.")
         ),
-        (Attribute::Version, Value::Uint32(16))
+        (Attribute::Version, Value::Uint32(17))
     );
 
     pub static ref E_DOMAIN_INFO_V1: EntryInitNew = entry_init!(
