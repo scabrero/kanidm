@@ -115,6 +115,10 @@ impl QueryServer {
             if system_info_version < 16 {
                 write_txn.migrate_15_to_16()?;
             }
+
+            if system_info_version < 17 {
+                write_txn.migrate_16_to_17()?;
+            }
         }
 
         // Reload if anything in migrations requires it.
@@ -507,6 +511,14 @@ impl<'a> QueryServerWriteTransaction<'a> {
             .into_iter(),
         )
         // Complete
+    }
+
+    #[instrument(level = "debug", skip_all)]
+    pub fn migrate_16_to_17(&mut self) -> Result<(), OperationError> {
+        // Append TokenCapable class to ServiceAccountns
+        let filter = filter!(f_eq(Attribute::Class, EntryClass::ServiceAccount.into()));
+        let modlist = ModifyList::new_append(Attribute::Class, EntryClass::TokenCapable.to_value());
+        self.internal_modify(&filter, &modlist)
     }
 
     #[instrument(level = "debug", skip_all)]
