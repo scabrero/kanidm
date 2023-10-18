@@ -259,6 +259,7 @@ pub enum SyntaxType {
     AuditLogString = 32,
     EcKeyPrivate = 33,
     Image = 34,
+    AppPassword = 35,
 }
 
 impl TryFrom<&str> for SyntaxType {
@@ -345,6 +346,7 @@ impl fmt::Display for SyntaxType {
             SyntaxType::AuditLogString => "AUDIT_LOG_STRING",
             SyntaxType::EcKeyPrivate => "EC_KEY_PRIVATE",
             SyntaxType::Image => "IMAGE",
+            SyntaxType::AppPassword => "APPLICATION_PASSWORD",
         })
     }
 }
@@ -916,6 +918,12 @@ pub struct Oauth2Session {
     pub rs_uuid: Uuid,
 }
 
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct AppPassword {
+    pub(crate) application: Uuid,
+    pub(crate) label: String,
+}
+
 /// A value is a complete unit of data for an attribute. It is made up of a PartialValue, which is
 /// used for selection, filtering, searching, matching etc. It also contains supplemental data
 /// which may be stored inside of the Value, such as credential secrets, blobs etc.
@@ -969,6 +977,8 @@ pub enum Value {
     EcKeyPrivate(EcKey<Private>),
 
     Image(ImageValue),
+
+    AppPassword(Uuid, AppPassword),
 }
 
 impl PartialEq for Value {
@@ -1758,6 +1768,10 @@ impl Value {
             Value::PhoneNumber(_, _) => true,
             Value::Address(_) => true,
 
+            Value::AppPassword(_, apppwd) => {
+                Value::validate_str_escapes(&apppwd.label)
+                    && Value::validate_singleline(&apppwd.label)
+            }
             Value::Uuid(_)
             | Value::Bool(_)
             | Value::Syntax(_)

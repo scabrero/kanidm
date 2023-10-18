@@ -22,9 +22,10 @@ use crate::credential::{totp::Totp, Credential};
 use crate::prelude::*;
 use crate::repl::{cid::Cid, proto::ReplAttrV1};
 use crate::schema::SchemaAttribute;
-use crate::value::{Address, ApiToken, IntentTokenState, Oauth2Session, Session};
+use crate::value::{Address, ApiToken, AppPassword, IntentTokenState, Oauth2Session, Session};
 
 pub use self::address::{ValueSetAddress, ValueSetEmailAddress};
+pub use self::apppassword::ValueSetAppPassword;
 pub use self::auditlogstring::{ValueSetAuditLogString, AUDIT_LOG_STRING_CAPACITY};
 pub use self::binary::{ValueSetPrivateBinary, ValueSetPublicBinary};
 pub use self::bool::ValueSetBool;
@@ -54,6 +55,7 @@ pub use self::utf8::ValueSetUtf8;
 pub use self::uuid::{ValueSetRefer, ValueSetUuid};
 
 mod address;
+mod apppassword;
 mod auditlogstring;
 mod binary;
 mod bool;
@@ -575,6 +577,11 @@ pub trait ValueSetT: std::fmt::Debug + DynClone {
         None
     }
 
+    fn as_apppassword_map(&self) -> Option<&BTreeMap<Uuid, AppPassword>> {
+        debug_assert!(false);
+        None
+    }
+
     fn repl_merge_valueset(
         &self,
         _older: &ValueSet,
@@ -656,6 +663,7 @@ pub fn from_result_value_iter(
         | Value::TotpSecret(_, _)
         | Value::Session(_, _)
         | Value::ApiToken(_, _)
+        | Value::AppPassword(_, _)
         | Value::Oauth2Session(_, _)
         | Value::JwsKeyEs256(_)
         | Value::JwsKeyRs256(_) => {
@@ -716,7 +724,7 @@ pub fn from_value_iter(mut iter: impl Iterator<Item = Value>) -> Result<ValueSet
         Value::TotpSecret(l, t) => ValueSetTotpSecret::new(l, t),
         Value::AuditLogString(c, s) => ValueSetAuditLogString::new((c, s)),
         Value::EcKeyPrivate(k) => ValueSetEcKeyPrivate::new(&k),
-
+        Value::AppPassword(u, a) => ValueSetAppPassword::new(u, a),
         Value::Image(imagevalue) => image::ValueSetImage::new(imagevalue),
         Value::PhoneNumber(_, _) => {
             debug_assert!(false);
@@ -774,6 +782,7 @@ pub fn from_db_valueset_v2(dbvs: DbValueSetV2) -> Result<ValueSet, OperationErro
             Err(OperationError::InvalidValueState)
         }
         DbValueSetV2::Image(set) => ValueSetImage::from_dbvs2(&set),
+        DbValueSetV2::AppPassword(set) => ValueSetAppPassword::from_dbvs2(set),
     }
 }
 
@@ -819,5 +828,6 @@ pub fn from_repl_v1(rv1: &ReplAttrV1) -> Result<ValueSet, OperationError> {
         ReplAttrV1::AuditLogString { map } => ValueSetAuditLogString::from_repl_v1(map),
         ReplAttrV1::EcKeyPrivate { key } => ValueSetEcKeyPrivate::from_repl_v1(key),
         ReplAttrV1::Image { set } => ValueSetImage::from_repl_v1(set),
+        ReplAttrV1::AppPassword { set } => ValueSetAppPassword::from_repl_v1(set),
     }
 }

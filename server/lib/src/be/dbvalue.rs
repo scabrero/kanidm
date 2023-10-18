@@ -541,6 +541,18 @@ pub enum DbValueImage {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
+pub enum DbValueAppPassword {
+    V1 {
+        #[serde(rename = "u")]
+        refer: Uuid,
+        #[serde(rename = "a")]
+        application: Uuid,
+        #[serde(rename = "l")]
+        label: String,
+    },
+}
+
+#[derive(Serialize, Deserialize, Debug)]
 pub enum DbValueV1 {
     #[serde(rename = "U8")]
     Utf8(String),
@@ -687,6 +699,8 @@ pub enum DbValueSetV2 {
     EcKeyPrivate(Vec<u8>),
     #[serde(rename = "IM")]
     Image(Vec<DbValueImage>),
+    #[serde(rename = "AP")]
+    AppPassword(Vec<DbValueAppPassword>),
 }
 
 impl DbValueSetV2 {
@@ -731,6 +745,7 @@ impl DbValueSetV2 {
             DbValueSetV2::TotpSecret(set) => set.len(),
             DbValueSetV2::AuditLogString(set) => set.len(),
             DbValueSetV2::Image(set) => set.len(),
+            DbValueSetV2::AppPassword(set) => set.len(),
             DbValueSetV2::EcKeyPrivate(_key) => 1, // here we have to hard code it because the Vec<u8>
                                                    // represents the bytes of  SINGLE(!) key
         }

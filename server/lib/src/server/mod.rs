@@ -556,6 +556,7 @@ pub trait QueryServerTransaction<'a> {
                         .ok_or_else(|| OperationError::InvalidAttribute("Invalid Filter syntax".to_string())),
                     SyntaxType::Image => Value::new_image(value),
 
+                    SyntaxType::AppPassword => Err(OperationError::InvalidAttribute("AppPassword can not be supplied through modification - please use the IDM api".to_string())),
                     SyntaxType::Credential => Err(OperationError::InvalidAttribute("Credentials can not be supplied through modification - please use the IDM api".to_string())),
                     SyntaxType::SecretUtf8String => Err(OperationError::InvalidAttribute("Radius secrets can not be supplied through modification - please use the IDM api".to_string())),
                     SyntaxType::SshKey => Err(OperationError::InvalidAttribute("SSH public keys can not be supplied through modification - please use the IDM api".to_string())),
@@ -637,6 +638,7 @@ pub trait QueryServerTransaction<'a> {
                     | SyntaxType::OauthScopeMap
                     | SyntaxType::Session
                     | SyntaxType::ApiToken
+                    | SyntaxType::AppPassword
                     | SyntaxType::Oauth2Session => {
                         let un = self.name_to_uuid(value).unwrap_or(UUID_DOES_NOT_EXIST);
                         Ok(PartialValue::Refer(un))
