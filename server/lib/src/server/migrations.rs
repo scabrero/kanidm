@@ -893,6 +893,9 @@ impl<'a> QueryServerWriteTransaction<'a> {
             IDM_ACP_GROUP_ACCOUNT_POLICY_MANAGE_DL6.clone().into(),
             IDM_ACP_PEOPLE_CREATE_DL6.clone().into(),
             IDM_ACP_GROUP_MANAGE_DL6.clone().into(),
+            IDM_ACP_APPLICATION_CREATE_DL6.clone().into(),
+            IDM_ACP_APPLICATION_MANAGE_DL6.clone().into(),
+            IDM_ACP_APPLICATION_DELETE_DL6.clone().into(),
             // Update anonymous with the correct entry manager,
             BUILTIN_ACCOUNT_ANONYMOUS_DL6.clone().into(),
         ];
