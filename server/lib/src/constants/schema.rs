@@ -679,7 +679,7 @@ pub static ref SCHEMA_CLASS_PERSON_DL5: SchemaClass = SchemaClass {
     systemmust: vec![
         Attribute::IdVerificationEcKey.into()
     ],
-    systemexcludes: vec![EntryClass::ServiceAccount.into()],
+    systemexcludes: vec![EntryClass::ServiceAccount.into(), EntryClass::Application.into()],
     ..Default::default()
 };
 
@@ -1077,6 +1077,17 @@ pub static ref SCHEMA_CLASS_OAUTH2_RS_PUBLIC_DL4: SchemaClass = SchemaClass {
 
     systemmay: vec![Attribute::OAuth2AllowLocalhostRedirect.into()],
     systemexcludes: vec![EntryClass::OAuth2ResourceServerBasic.into()],
+    ..Default::default()
+};
+
+pub static ref SCHEMA_CLASS_APPLICATION_DL6: SchemaClass = SchemaClass {
+    uuid: UUID_SCHEMA_CLASS_APPLICATION,
+    name: EntryClass::Application.into(),
+
+    description: "The class representing an application".to_string(),
+    systemmust: vec![Attribute::Name.into()],
+    systemmay: vec![Attribute::Description.into()],
+    systemsupplements: vec![EntryClass::ServiceAccount.into()],
     ..Default::default()
 };
 
