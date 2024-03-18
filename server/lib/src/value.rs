@@ -1107,6 +1107,7 @@ pub enum Value {
     OauthClaimValue(String, Uuid, BTreeSet<String>),
     OauthClaimMap(String, OauthClaimMapJoin),
 
+    //TODO remove uuid
     ApplicationPassword(Uuid, ApplicationPassword),
 }
 
