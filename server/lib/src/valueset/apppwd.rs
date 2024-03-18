@@ -71,6 +71,7 @@ impl ValueSetT for ValueSetApplicationPassword {
                     x.retain(|y| y.uuid != *u);
                     let post = x.into_iter().count();
                     post < prev
+                    // TODO Drop KV pair if vec empty
                 })
             }
             _ => false,
