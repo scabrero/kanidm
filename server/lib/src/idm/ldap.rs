@@ -555,7 +555,10 @@ impl LdapServer {
             }
         }
 
-        error!("Failed to parse bind DN, no captures. Bind DN was {:?})", dn);
+        error!(
+            "Failed to parse bind DN, no captures. Bind DN was {:?})",
+            dn
+        );
         Err(OperationError::NoMatchingEntries)
     }
 }
